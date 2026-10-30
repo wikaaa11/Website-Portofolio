@@ -7,6 +7,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll("main section[id]");
   const toast = document.querySelector(".toast");
   const backToTop = document.querySelector(".back-to-top");
+  const themeToggle = document.querySelector(".theme-toggle");
+  const savedTheme = localStorage.getItem("portfolio-theme");
+
+  const setTheme = (theme) => {
+    const isLight = theme === "light";
+    document.body.dataset.theme = isLight ? "light" : "dark";
+    if (themeToggle) {
+      themeToggle.setAttribute("aria-label", isLight ? "Aktifkan mode gelap" : "Aktifkan mode cerah");
+      themeToggle.setAttribute("aria-pressed", String(isLight));
+      themeToggle.querySelector(".theme-icon").textContent = isLight ? "☀" : "☾";
+    }
+  };
+
+  setTheme(savedTheme === "light" ? "light" : "dark");
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme = document.body.dataset.theme === "light" ? "dark" : "light";
+    localStorage.setItem("portfolio-theme", nextTheme);
+    setTheme(nextTheme);
+  });
 
   // Tampilkan screenshot asli hanya jika file aset berhasil dimuat.
   document.querySelectorAll(".project-image").forEach((image) => {
